@@ -16,7 +16,7 @@ public class AddNewCounterActivity extends AppCompatActivity {
     EditText initNew;
     EditText commentNew;
     Button createButton;
-    String initString;
+    String initvalueString;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,12 +26,49 @@ public class AddNewCounterActivity extends AppCompatActivity {
         commentNew = (EditText) findViewById(R.id.add_comment);
         createButton = (Button) findViewById(R.id.create_button);
 
-        createButton.setOnClickListener(new View.OnClickListener(){
+        createButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 name = nameNew.getText().toString();
                 comment = commentNew.getText().toString();
-                initString = initNew.getText().toString();
+                initvalueString = initNew.getText().toString();
 
+                if (initvalueString.matches("")) {
+                    Toast.makeText(AddNewCounterActivity.this, "Init value is required", Toast.LENGTH_SHORT).show();
+                }
+
+                else if (name.matches("")) {
+                    Toast.makeText(AddNewCounterActivity.this, " Name is required", Toast.LENGTH_SHORT).show();
+                }
+
+                else if (!isStringInt(initvalueString)) {
+                    Toast.makeText(AddNewCounterActivity.this, "Enter Integer number ", Toast.LENGTH_SHORT).show();
+                }
+
+                else if (Integer.valueOf(initvalueString) < 0) {
+                    Toast.makeText(AddNewCounterActivity.this, "Number should be non-negative", Toast.LENGTH_SHORT).show();
+                }
+
+                else {
+                    Intent intent = new Intent();
+                    intent.putExtra("Name", name);
+                    intent.putExtra("Initial value", Integer.valueOf(initvalueString));
+                    intent.putExtra("Comment", comment);
+                    finish();
+
+                }
+            }
+        });
+    }
+    public boolean isStringInt(String s)
+    {
+        try
+        {
+            Integer.parseInt(s);
+            return true;
+        } catch (NumberFormatException ex)
+        {
+            return false;
+        }
     }
 }
