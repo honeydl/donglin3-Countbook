@@ -1,9 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.donglin_countbook.EditCounterActivity">
 
-</android.support.constraint.ConstraintLayout>
+    <!-- Code taken from
+        http://stackoverflow.com/questions/10978038/restrict-edittext-to-single-line
+        http://stackoverflow.com/questions/10870111/edit-text-without-autocorrect
+    -->
+    <EditText
+        android:id="@+id/add_counter_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/counter_name"
+        android:inputType="textNoSuggestions|textVisiblePassword"
+        android:paddingTop="20dp"
+        android:maxLines="1" />
+
+
+
+    <EditText
+        android:id="@+id/add_initial_value"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/initial_value"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp"
+        android:maxLines="1" />
+
+    <EditText
+        android:id="@+id/add_current_value"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/current_value"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp"
+        android:maxLines="1" />
+
+    <EditText
+        android:id="@+id/add_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/date"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp"
+        android:maxLines="1" />
+    <EditText
+        android:id="@+id/add_comment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/comment"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp"
+        android:maxLines="1" />
+
+
+    <Button
+        android:id="@+id/add"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/add"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp" />
+
+
+</LinearLayout>
