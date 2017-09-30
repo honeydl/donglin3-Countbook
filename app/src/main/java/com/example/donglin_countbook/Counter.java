@@ -46,7 +46,15 @@ public class Counter {
         this.date = new java.util.Date();
     }
 
-    public String getDate(){
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public Date getCounterDate() {
+        return this.date;
+    }
+
+    public String getDateString(){
         //return date.toString();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         return dateFormat.format(this.date);
@@ -97,7 +105,7 @@ public class Counter {
 
     @Override
     public String toString(){
-        return name+" | +Count:"+String.valueOf(currentValue)+" | "+ this.getDate();
+        return this.getName()+" | +Count:"+String.valueOf(this.getCurrentValue())+" | "+ this.getDateString();
     }
 
 }

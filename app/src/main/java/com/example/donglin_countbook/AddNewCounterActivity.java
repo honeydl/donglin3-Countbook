@@ -3,6 +3,7 @@ package com.example.donglin_countbook;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -54,23 +55,34 @@ public class AddNewCounterActivity extends AppCompatActivity {
                 }
 
                 else if (!isStringInt(initvalueString)) {
-                    Toast.makeText(AddNewCounterActivity.this, "Enter Integer number ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddNewCounterActivity.this, "Enter Integer number for initial value", Toast.LENGTH_SHORT).show();
                 }
 
                 else if (Integer.valueOf(initvalueString) < 0) {
-                    Toast.makeText(AddNewCounterActivity.this, "Number should be non-negative", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddNewCounterActivity.this, "Initial value should be non-negative", Toast.LENGTH_SHORT).show();
                 }
 
                 else{
-                    InputOutputGson ioGson = new InputOutputGson(AddNewCounterActivity.this);
-                    ArrayList<Counter> counterList = new ArrayList<Counter>();
-                    counterList.add(new Counter(name, Integer.valueOf(initvalueString), comment));
-                    ioGson.saveInFile(counterList);
-                    finish();
+                    addCounter(name, Integer.valueOf(initvalueString), comment);
                 }
             }
         });
     }
+
+    protected void addCounter(String name, int initValue, String comment) {
+        try {
+            Counter newCounter = new Counter(name, initValue, comment);
+            InputOutputGson IOGson = new InputOutputGson(this);
+            IOGson.saveInFile(newCounter);
+            // http://stackoverflow.com/questions/14848590/return-back-to-mainactivity-from-another-activity
+            finish();
+            Log.d("list_file", fileList().toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException();
+        }
+    }
+
     public boolean isStringInt(String s)
     {
         try

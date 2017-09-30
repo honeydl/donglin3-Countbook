@@ -10,22 +10,9 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.ArrayAdapter;
-import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.lang.reflect.Type;
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
-import  com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
 
 public class MainActivity extends AppCompatActivity {
-    private static final String FILENAME = "file.sav";
     private TextView total;
     private ListView counterListView;
     private String name;
@@ -49,14 +36,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intentAdd = new Intent(MainActivity.this, AddNewCounterActivity.class);
                 startActivity(intentAdd);
-
             }
         });
     }
@@ -65,9 +50,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         // TODO Auto-generated method stub
         super.onStart();
-        InputOutputGson ioGson = new InputOutputGson(this);
-        counterList = ioGson.loadFromAllFile();
-        //load the data from the file
+        loadAllCounter();
         total = (TextView) findViewById(R.id.counter_total_number);
         total.setText("Total is : " + Integer.toString(counterList.size()));
         //add the total counter  number on the top of the main activity
@@ -79,53 +62,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         counterList.clear();
-        InputOutputGson ioGson = new InputOutputGson(this);
-        counterList = ioGson.loadFromAllFile();
+        loadAllCounter();
         adapter.notifyDataSetChanged();
-
     }
 
-//    private void loadFromFile() {
-//        try {
-//            FileInputStream fis = openFileInput(FILENAME);
-//            BufferedReader in = new BufferedReader(new InputStreamReader(fis));
-//
-//            Gson gson = new Gson();
-//            Type listType = new TypeToken<ArrayList<Counter>>() {
-//            }.getType();
-//            counterList = gson.fromJson(in, listType);
-//
-//        } catch (FileNotFoundException e) {
-//            counterList = new ArrayList<Counter>();
-//        } catch (IOException e) {
-//            throw new RuntimeException();
-//        }
-
-//    }
-//
-//    /**
-//     * save all the changes into a file
-//     * <br>
-//     *  load countersList from the file
-//     */
-//    private void saveInFile() {
-//        try {
-//            FileOutputStream fos = openFileOutput(FILENAME,
-//                    Context.MODE_PRIVATE);
-//
-//            BufferedWriter out = new BufferedWriter(new OutputStreamWriter(fos));
-//
-//            Gson gson = new Gson();
-//            gson.toJson(counterList, out);
-//
-//            out.flush();
-//
-//            fos.close();
-//        } catch (FileNotFoundException e) {
-//            throw new RuntimeException();
-//        } catch (IOException e) {
-//            throw new RuntimeException();
-//        }
-//    }
+    private void loadAllCounter() {
+        InputOutputGson IOGson = new InputOutputGson(this);
+        counterList = IOGson.loadFromAllFiles();
+    }
 
 }

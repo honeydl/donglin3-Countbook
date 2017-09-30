@@ -7,10 +7,6 @@
 
     tools:context="com.example.donglin_countbook.AddNewCounterActivity">
 
-    <!-- Code taken from
-        http://stackoverflow.com/questions/10978038/restrict-edittext-to-single-line
-        http://stackoverflow.com/questions/10870111/edit-text-without-autocorrect
-    -->
     <EditText
         android:id="@+id/add_counter_name"
         android:layout_width="match_parent"

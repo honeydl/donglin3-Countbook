@@ -22,7 +22,10 @@ public class EditCounterActivity extends AppCompatActivity {
     String comment;
     String initvalueString;
     String currentvalueString;
-    Button addButton;
+    Button saveButton;
+    Button resetButton;
+    Button incrementButton;
+    Button decrementButton;
     Counter CounterText;
 
     @Override
@@ -35,10 +38,12 @@ public class EditCounterActivity extends AppCompatActivity {
         dateText = (EditText) findViewById(R.id.add_date);
         commentText = (EditText)findViewById(R.id.add_comment);
         dateText.setEnabled(false);
-        addButton= (Button) findViewById(R.id.add);
+        saveButton= (Button) findViewById(R.id.add);
+        resetButton=(Button) findViewById(R.id.reset);
+        incrementButton=(Button) findViewById(R.id.increment);
+        decrementButton=(Button) findViewById(R.id.decrement);
 
-
-        addButton.setOnClickListener(new View.OnClickListener(){
+        saveButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
                 name = nameText.getText().toString();
@@ -47,13 +52,13 @@ public class EditCounterActivity extends AppCompatActivity {
                 currentvalueString = currentText.getText().toString();
 
 
-                if (initvalueString.matches("")){
+                if (initvalueString.isEmpty() || initvalueString.trim().isEmpty()){
                     Toast.makeText(EditCounterActivity.this, "init value is required", Toast.LENGTH_SHORT).show();
                 }
-                else if (name.matches("")){
+                else if (name.isEmpty() || name.trim().isEmpty()){
                     Toast.makeText(EditCounterActivity.this, "name is required", Toast.LENGTH_SHORT).show();
                 }
-                else if (currentvalueString.matches("")){
+                else if (currentvalueString.isEmpty() || currentvalueString.trim().isEmpty()){
                     Toast.makeText(EditCounterActivity.this, "current value is required", Toast.LENGTH_SHORT).show();
                 }
                 else if (!isStringInt(initvalueString) || !isStringInt(currentvalueString)){
