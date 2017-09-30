@@ -40,11 +40,18 @@
 
 
     <Button
-        android:id="@+id/create_button"
+    android:id="@+id/create_button"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="@string/create"
+    android:paddingTop="15dp"
+    android:paddingBottom="15dp" />
+
+    <Button
+        android:id="@+id/cancel_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/create"
+        android:text="@string/cancel"
         android:paddingTop="15dp"
         android:paddingBottom="15dp" />
-
 </LinearLayout>

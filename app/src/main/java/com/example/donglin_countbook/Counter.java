@@ -26,6 +26,14 @@ public class Counter {
         this.setDate();
         comment = "";
     }
+
+    public Counter(String name, int initialValue, String comment){
+        this.setName(name);
+        this.setInitialValue(initialValue);
+        currentValue = initialValue;
+        this.setDate();
+        this.comment = comment;
+    }
     public String getName(){
         return name;
     }
@@ -41,7 +49,7 @@ public class Counter {
     public String getDate(){
         //return date.toString();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        return dateFormat.format(date);
+        return dateFormat.format(this.date);
     }
 
     public int getCurrentValue(){

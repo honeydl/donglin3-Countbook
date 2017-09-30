@@ -10,5 +10,5 @@
     <string name="add">Add</string>
     <string name="current_value">Current Value</string>
     <string name="date">Date</string>
-
+    <string name="cancel">Cancel</string>
 </resources>

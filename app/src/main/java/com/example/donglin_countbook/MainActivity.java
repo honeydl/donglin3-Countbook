@@ -60,47 +60,72 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-    private void loadFromFile() {
-        try {
-            FileInputStream fis = openFileInput(FILENAME);
-            BufferedReader in = new BufferedReader(new InputStreamReader(fis));
 
-            Gson gson = new Gson();
-            Type listType = new TypeToken<ArrayList<Counter>>() {
-            }.getType();
-            counterList = gson.fromJson(in, listType);
-
-        } catch (FileNotFoundException e) {
-            counterList = new ArrayList<Counter>();
-        } catch (IOException e) {
-            throw new RuntimeException();
-        }
+    @Override
+    protected void onStart() {
+        // TODO Auto-generated method stub
+        super.onStart();
+        InputOutputGson ioGson = new InputOutputGson(this);
+        counterList = ioGson.loadFromAllFile();
+        //load the data from the file
+        total = (TextView) findViewById(R.id.counter_total_number);
+        total.setText("Total is : " + Integer.toString(counterList.size()));
+        //add the total counter  number on the top of the main activity
+        adapter = new ArrayAdapter<>(this, R.layout.counter_list_item, counterList);
+        counterListView.setAdapter(adapter);
+        //set adapter as a counterLit array adapter.
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        counterList.clear();
+        InputOutputGson ioGson = new InputOutputGson(this);
+        counterList = ioGson.loadFromAllFile();
+        adapter.notifyDataSetChanged();
 
     }
 
-    /**
-     * save all the changes into a file
-     * <br>
-     *  load countersList from the file
-     */
-    private void saveInFile() {
-        try {
-            FileOutputStream fos = openFileOutput(FILENAME,
-                    Context.MODE_PRIVATE);
+//    private void loadFromFile() {
+//        try {
+//            FileInputStream fis = openFileInput(FILENAME);
+//            BufferedReader in = new BufferedReader(new InputStreamReader(fis));
+//
+//            Gson gson = new Gson();
+//            Type listType = new TypeToken<ArrayList<Counter>>() {
+//            }.getType();
+//            counterList = gson.fromJson(in, listType);
+//
+//        } catch (FileNotFoundException e) {
+//            counterList = new ArrayList<Counter>();
+//        } catch (IOException e) {
+//            throw new RuntimeException();
+//        }
 
-            BufferedWriter out = new BufferedWriter(new OutputStreamWriter(fos));
-
-            Gson gson = new Gson();
-            gson.toJson(counterList, out);
-
-            out.flush();
-
-            fos.close();
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException();
-        } catch (IOException e) {
-            throw new RuntimeException();
-        }
-    }
+//    }
+//
+//    /**
+//     * save all the changes into a file
+//     * <br>
+//     *  load countersList from the file
+//     */
+//    private void saveInFile() {
+//        try {
+//            FileOutputStream fos = openFileOutput(FILENAME,
+//                    Context.MODE_PRIVATE);
+//
+//            BufferedWriter out = new BufferedWriter(new OutputStreamWriter(fos));
+//
+//            Gson gson = new Gson();
+//            gson.toJson(counterList, out);
+//
+//            out.flush();
+//
+//            fos.close();
+//        } catch (FileNotFoundException e) {
+//            throw new RuntimeException();
+//        } catch (IOException e) {
+//            throw new RuntimeException();
+//        }
+//    }
 
 }

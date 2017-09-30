@@ -8,6 +8,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 public class AddNewCounterActivity extends AppCompatActivity {
     String name;
     String comment;
@@ -16,6 +18,7 @@ public class AddNewCounterActivity extends AppCompatActivity {
     EditText initNew;
     EditText commentNew;
     Button createButton;
+    Button cancelButton;
     String initvalueString;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +28,15 @@ public class AddNewCounterActivity extends AppCompatActivity {
         initNew = (EditText) findViewById(R.id.add_initial_value);
         commentNew = (EditText) findViewById(R.id.add_comment);
         createButton = (Button) findViewById(R.id.create_button);
+        cancelButton = (Button) findViewById(R.id.cancel_button);
+
+
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         createButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -33,11 +45,11 @@ public class AddNewCounterActivity extends AppCompatActivity {
                 comment = commentNew.getText().toString();
                 initvalueString = initNew.getText().toString();
 
-                if (initvalueString.matches("")) {
+                if (initvalueString.isEmpty() || initvalueString.trim().isEmpty()) {
                     Toast.makeText(AddNewCounterActivity.this, "Init value is required", Toast.LENGTH_SHORT).show();
                 }
 
-                else if (name.matches("")) {
+                else if (name.isEmpty() || name.trim().isEmpty()) {
                     Toast.makeText(AddNewCounterActivity.this, " Name is required", Toast.LENGTH_SHORT).show();
                 }
 
@@ -49,13 +61,12 @@ public class AddNewCounterActivity extends AppCompatActivity {
                     Toast.makeText(AddNewCounterActivity.this, "Number should be non-negative", Toast.LENGTH_SHORT).show();
                 }
 
-                else {
-                    Intent intent = new Intent();
-                    intent.putExtra("Name", name);
-                    intent.putExtra("Initial value", Integer.valueOf(initvalueString));
-                    intent.putExtra("Comment", comment);
+                else{
+                    InputOutputGson ioGson = new InputOutputGson(AddNewCounterActivity.this);
+                    ArrayList<Counter> counterList = new ArrayList<Counter>();
+                    counterList.add(new Counter(name, Integer.valueOf(initvalueString), comment));
+                    ioGson.saveInFile(counterList);
                     finish();
-
                 }
             }
         });

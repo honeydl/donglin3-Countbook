@@ -77,19 +77,19 @@ public class EditCounterActivity extends AppCompatActivity {
                     currentvalue = Integer.valueOf(currentvalueString);
                     //get user's input
 
-                    editCounter.setName(name);
-                    //Question: Do we need to reset the date to current date when the init value is changed?
-                    if (currentvalue!=editCounter.getCurrentValue()) {
-                        editCounter.setDate();
-                    }
-
-                    editCounter.setInitialValue(initvalue);
-                    editCounter.setCurrentValue(currentvalue);
-                    editCounter.setComment(comment);
-                    Intent intent = new Intent();
-                    intent.putExtra("EDITEDCOUNTER", editCounter);
-                    setResult(RESULT_OK, intent);
-                    finish();
+//                    editCounter.setName(name);
+//                    //Question: Do we need to reset the date to current date when the init value is changed?
+//                    if (currentvalue!=editCounter.getCurrentValue()) {
+//                        editCounter.setDate();
+//                    }
+//
+//                    editCounter.setInitialValue(initvalue);
+//                    editCounter.setCurrentValue(currentvalue);
+//                    editCounter.setComment(comment);
+//                    Intent intent = new Intent();
+//                    intent.putExtra("EDITEDCOUNTER", editCounter);
+//                    setResult(RESULT_OK, intent);
+//                    finish();
                     //shut down this activity
                 }
 
