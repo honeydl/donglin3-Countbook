@@ -1,0 +1,11 @@
+Counter class: This describes a counter object used to count things
+               It contains counter name, inital value, current value, date and comment
+
+InputOutputActivity: This helps to save and load information from files, used in Mainactivity, AddNewCounterActivity and EditCounterActivity
+
+MainActivity:        Shows a list of counters and summary of each counter. 
+
+AddNewCounterActivity: Add a new counter by input name and initial value. 
+                       New counter information will be stored and present in mainpage after clicking create
+EditCounterActivity:   Edit a counter by reenter name,initial value, current value and comment. Able to reset current value to intial value. Able to increment or decrement current value. 
+                       Able to delete an existing Counter. All information will be stored adn present in mainpage after  clicking save. 
