@@ -5,8 +5,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.ArrayAdapter;
@@ -14,36 +18,49 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     private TextView total;
-    private ListView counterListView;
     private String name;
     private String comment;
     private int initialValue;
     private Counter newCounter;
     private ArrayList<Counter> counterList = new ArrayList<Counter>();
     private ArrayAdapter<Counter> adapter;
+    private ListView counterListView;
+    private Button addButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        counterListView = (ListView) findViewById(R.id.counters_list); //Create listView reference counterList Which contains all of the counters that user has created;
+
+        addButton=(Button) findViewById(R.id.add_button);
+        addButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intentAdd = new Intent(MainActivity.this, AddNewCounterActivity.class);
+                startActivity(intentAdd);
+            }
+        });
+
+        counterListView = (ListView) findViewById(R.id.counter_list); //Create listView reference counterList Which contains all of the counters that user has created;
         counterListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 // TODO may need to intent to an new activity that only enables users to increment, decrement, delete, and reset
                 Intent intentEdit = new Intent(MainActivity.this, EditCounterActivity.class);
+                Counter oldCounter = (Counter)(adapterView.getItemAtPosition(i));
+                intentEdit.putExtra("OLDCOUNTER", oldCounter);
                 startActivity(intentEdit);
             }
         });
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intentAdd = new Intent(MainActivity.this, AddNewCounterActivity.class);
-                startActivity(intentAdd);
-            }
-        });
+//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intentAdd = new Intent(MainActivity.this, AddNewCounterActivity.class);
+//                startActivity(intentAdd);
+//            }
+//        });
     }
 
     @Override
@@ -65,6 +82,32 @@ public class MainActivity extends AppCompatActivity {
         loadAllCounter();
         adapter.notifyDataSetChanged();
     }
+//
+//    // Code taken from https://developer.android.com/guide/topics/ui/menus.html
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        MenuInflater inflater = getMenuInflater();
+//        inflater.inflate(R.menu.add_counter_menu, menu);
+//        return true;
+//    }
+//
+//    // code taken from https://developer.android.com/training/basics/firstapp/starting-activity.html#BuildIntent
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        int itemId = item.getItemId();
+//
+//        // Handle item selection
+//        switch (itemId) {
+//            case R.id.action_add_counter:
+//                Intent intentAdd = new Intent(this, AddNewCounterActivity.class);
+//                startActivity(intentAdd);
+//                break;
+//            default:
+//                return super.onOptionsItemSelected(item);
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
 
     private void loadAllCounter() {
         InputOutputGson IOGson = new InputOutputGson(this);

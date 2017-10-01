@@ -1,5 +1,7 @@
 package com.example.donglin_countbook;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
@@ -9,7 +11,7 @@ import java.util.Date;
  * Created by lenovo on 2017/9/29.
  */
 
-public class Counter {
+public class Counter implements Parcelable{
     private String name;
     private Date date;
     private int currentValue;
@@ -33,6 +35,17 @@ public class Counter {
         currentValue = initialValue;
         this.setDate();
         this.comment = comment;
+    }
+
+    public Counter(Parcel parcel){
+        this.name = parcel.readString();
+        this.comment = parcel.readString();
+        this.initialValue = parcel.readInt();
+        this.currentValue = parcel.readInt();
+        long tmpDate = parcel.readLong();
+        this.date = tmpDate == -1 ? null : new Date(tmpDate);
+
+
     }
     public String getName(){
         return name;
@@ -107,5 +120,30 @@ public class Counter {
     public String toString(){
         return this.getName()+" | +Count:"+String.valueOf(this.getCurrentValue())+" | "+ this.getDateString();
     }
+    @Override
+    public int describeContents(){
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i){
+        parcel.writeString(this.name);
+        parcel.writeString(this.comment);
+        parcel.writeInt(this.initialValue);
+        parcel.writeInt(this.currentValue);
+        parcel.writeLong(date != null ? date.getTime() : -1);
+    }
+
+    public static final Parcelable.Creator<Counter> CREATOR = new Parcelable.Creator<Counter>(){
+        @Override
+        public Counter createFromParcel(Parcel parcel){
+            return new Counter(parcel);
+        }
+        @Override
+        public Counter[] newArray(int i){
+            return new Counter[i];
+        }
+
+    };
 
 }
