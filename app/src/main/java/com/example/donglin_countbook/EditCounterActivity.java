@@ -26,7 +26,8 @@ public class EditCounterActivity extends AppCompatActivity {
     Button resetButton;
     Button incrementButton;
     Button decrementButton;
-    Counter CounterText;
+    Button deleteButton;
+    Counter counterText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,69 +37,110 @@ public class EditCounterActivity extends AppCompatActivity {
         initText = (EditText) findViewById(R.id.add_initial_value);
         currentText = (EditText)findViewById(R.id.add_current_value);
         dateText = (EditText) findViewById(R.id.add_date);
-        commentText = (EditText)findViewById(R.id.add_comment);
         dateText.setEnabled(false);
+        commentText = (EditText)findViewById(R.id.add_comment);
         saveButton= (Button) findViewById(R.id.add);
         resetButton=(Button) findViewById(R.id.reset);
         incrementButton=(Button) findViewById(R.id.increment);
         decrementButton=(Button) findViewById(R.id.decrement);
+        deleteButton=(Button) findViewById(R.id.delete);
+
+        // get the counter passed by the detail activity
+        counterText = getIntent().getParcelableExtra("OLDCOUNTER");
+
+        //get the detail information of the passed counter and show them on the page
+        nameText.setText(counterText.getName());
+        initText.setText(Integer.toString(counterText.getInitialValue()));
+        currentText.setText(Integer.toString(counterText.getCurrentValue()));
+        dateText.setText(counterText.getDateString());
+        commentText.setText(counterText.getComment());
+
+        resetButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                currentvalue = initvalue;
+                currentText.setText(Integer.toString(currentvalue));
+            }
+        });
+
+        incrementButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                currentvalue +=1;
+                currentText.setText(Integer.toString(currentvalue));
+            }
+        });
+
+        decrementButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                currentvalue -=1;
+                currentText.setText(Integer.toString(currentvalue));
+            }
+        });
+
+        deleteButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                InputOutputGson ioGson = new InputOutputGson(EditCounterActivity.this);
+                ioGson.deleteFile(counterText);
+                finish();
+            }
+        });
 
         saveButton.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 name = nameText.getText().toString();
                 comment = commentText.getText().toString();
                 initvalueString = initText.getText().toString();
                 currentvalueString = currentText.getText().toString();
 
-
-                if (initvalueString.isEmpty() || initvalueString.trim().isEmpty()){
+                if (initvalueString.isEmpty() || initvalueString.trim().isEmpty()) {
                     Toast.makeText(EditCounterActivity.this, "init value is required", Toast.LENGTH_SHORT).show();
-                }
-                else if (name.isEmpty() || name.trim().isEmpty()){
+                } else if (name.isEmpty() || name.trim().isEmpty()) {
                     Toast.makeText(EditCounterActivity.this, "name is required", Toast.LENGTH_SHORT).show();
-                }
-                else if (currentvalueString.isEmpty() || currentvalueString.trim().isEmpty()){
+                } else if (currentvalueString.isEmpty() || currentvalueString.trim().isEmpty()) {
                     Toast.makeText(EditCounterActivity.this, "current value is required", Toast.LENGTH_SHORT).show();
-                }
-                else if (!isStringInt(initvalueString) || !isStringInt(currentvalueString)){
+                } else if (!isStringInt(initvalueString) || !isStringInt(currentvalueString)) {
                     Toast.makeText(EditCounterActivity.this, "init value should be an integer", Toast.LENGTH_SHORT).show();
-                }
-                else if (!isStringInt(currentvalueString)){
+                } else if (!isStringInt(currentvalueString)) {
                     Toast.makeText(EditCounterActivity.this, "current value should be an integer", Toast.LENGTH_SHORT).show();
-                }
-                else if (Integer.valueOf(initvalueString)<0||Integer.valueOf(currentvalueString)<0) {
+                } else if (Integer.valueOf(initvalueString) < 0 || Integer.valueOf(currentvalueString) < 0) {
                     Toast.makeText(EditCounterActivity.this, "init value should be non-negative", Toast.LENGTH_SHORT).show();
-                }
-                else if (Integer.valueOf(currentvalueString)<0) {
+                } else if (Integer.valueOf(currentvalueString) < 0) {
                     Toast.makeText(EditCounterActivity.this, "current value should be non-negative", Toast.LENGTH_SHORT).show();
-                }
-                //Question#1
-//                else if (Integer.valueOf(initString)>Integer.valueOf(currentString)){
-//                    Toast.makeText(edit_page.this, "current value must bigger than or equal to the init value!", Toast.LENGTH_SHORT).show();
-//                }
-                else {
+                } else {
                     initvalue = Integer.valueOf(initvalueString);
                     currentvalue = Integer.valueOf(currentvalueString);
                     //get user's input
+                    counterText.setName(name);
+                    //Question: Do we need to reset the date to current date when the init value is changed?
+                    if (currentvalue != counterText.getCurrentValue()) {
+                        counterText.setDate();
+                    }
 
-//                    editCounter.setName(name);
-//                    //Question: Do we need to reset the date to current date when the init value is changed?
-//                    if (currentvalue!=editCounter.getCurrentValue()) {
-//                        editCounter.setDate();
-//                    }
-//
-//                    editCounter.setInitialValue(initvalue);
-//                    editCounter.setCurrentValue(currentvalue);
-//                    editCounter.setComment(comment);
+                    counterText.setInitialValue(initvalue);
+                    counterText.setCurrentValue(currentvalue);
+                    counterText.setComment(comment);
+
+                    Counter newCounter = new Counter();
+                    newCounter.setName(name);
+                    newCounter.setInitialValue(initvalue);
+                    newCounter.setCurrentValue(currentvalue);
+                    newCounter.setDate(counterText.getCounterDate());
+                    newCounter.setComment(comment);
+
+                    InputOutputGson ioGson = new InputOutputGson(EditCounterActivity.this);
+                    ioGson.deleteFile(counterText);
+                    ioGson.saveInFile(newCounter);
+
 //                    Intent intent = new Intent();
-//                    intent.putExtra("EDITEDCOUNTER", editCounter);
+//                    intent.putExtra("EDITEDCOUNTER", counterText);
 //                    setResult(RESULT_OK, intent);
-//                    finish();
+                    finish();
                     //shut down this activity
                 }
-
-
             }
         });
     }
