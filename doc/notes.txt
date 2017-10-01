@@ -1,7 +1,7 @@
 Counter class: This describes a counter object used to count things
                It contains counter name, inital value, current value, date and comment
 
-InputOutputActivity: This helps to save and load information from files, used in Mainactivity, AddNewCounterActivity and EditCounterActivity
+InputOutputGson: This helps to save and load information from files, used in Mainactivity, AddNewCounterActivity and EditCounterActivity
 
 MainActivity:        Shows a list of counters and summary of each counter. 
 
