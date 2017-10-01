@@ -53,14 +53,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intentAdd = new Intent(MainActivity.this, AddNewCounterActivity.class);
-//                startActivity(intentAdd);
-//            }
-//        });
     }
 
     @Override
@@ -78,40 +70,20 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        counterList.clear();
         loadAllCounter();
         adapter.notifyDataSetChanged();
     }
-//
-//    // Code taken from https://developer.android.com/guide/topics/ui/menus.html
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        MenuInflater inflater = getMenuInflater();
-//        inflater.inflate(R.menu.add_counter_menu, menu);
-//        return true;
-//    }
-//
-//    // code taken from https://developer.android.com/training/basics/firstapp/starting-activity.html#BuildIntent
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        int itemId = item.getItemId();
-//
-//        // Handle item selection
-//        switch (itemId) {
-//            case R.id.action_add_counter:
-//                Intent intentAdd = new Intent(this, AddNewCounterActivity.class);
-//                startActivity(intentAdd);
-//                break;
-//            default:
-//                return super.onOptionsItemSelected(item);
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
+
 
     private void loadAllCounter() {
         InputOutputGson IOGson = new InputOutputGson(this);
-        counterList = IOGson.loadFromAllFiles();
+        ArrayList<Counter> counters = IOGson.loadFromAllFiles();
+        counterList.clear();
+        if(!counters.isEmpty()){
+            for(Counter counter: counters){
+                counterList.add(counter);
+            }
+        }
     }
 
 }
