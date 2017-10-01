@@ -39,7 +39,7 @@ public class EditCounterActivity extends AppCompatActivity {
         dateText = (EditText) findViewById(R.id.add_date);
         dateText.setEnabled(false);
         commentText = (EditText)findViewById(R.id.add_comment);
-        saveButton= (Button) findViewById(R.id.add);
+        saveButton= (Button) findViewById(R.id.save);
         resetButton=(Button) findViewById(R.id.reset);
         incrementButton=(Button) findViewById(R.id.increment);
         decrementButton=(Button) findViewById(R.id.decrement);
@@ -58,6 +58,11 @@ public class EditCounterActivity extends AppCompatActivity {
         resetButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+                initvalueString = initText.getText().toString();
+                currentvalueString = currentText.getText().toString();
+                initvalue = Integer.valueOf(initvalueString);
+                currentvalue = Integer.valueOf(currentvalueString);
+
                 currentvalue = initvalue;
                 currentText.setText(Integer.toString(currentvalue));
             }
@@ -66,7 +71,8 @@ public class EditCounterActivity extends AppCompatActivity {
         incrementButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                currentvalue +=1;
+                currentvalueString = currentText.getText().toString();
+                currentvalue = Integer.valueOf(currentvalueString) + 1;
                 currentText.setText(Integer.toString(currentvalue));
             }
         });
@@ -74,7 +80,8 @@ public class EditCounterActivity extends AppCompatActivity {
         decrementButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                currentvalue -=1;
+                currentvalueString = currentText.getText().toString();
+                currentvalue = Integer.valueOf(currentvalueString) - 1;
                 currentText.setText(Integer.toString(currentvalue));
             }
         });
@@ -106,40 +113,28 @@ public class EditCounterActivity extends AppCompatActivity {
                     Toast.makeText(EditCounterActivity.this, "init value should be an integer", Toast.LENGTH_SHORT).show();
                 } else if (!isStringInt(currentvalueString)) {
                     Toast.makeText(EditCounterActivity.this, "current value should be an integer", Toast.LENGTH_SHORT).show();
-                } else if (Integer.valueOf(initvalueString) < 0 || Integer.valueOf(currentvalueString) < 0) {
+                } else if (Integer.valueOf(initvalueString) < 0) {
                     Toast.makeText(EditCounterActivity.this, "init value should be non-negative", Toast.LENGTH_SHORT).show();
                 } else if (Integer.valueOf(currentvalueString) < 0) {
                     Toast.makeText(EditCounterActivity.this, "current value should be non-negative", Toast.LENGTH_SHORT).show();
                 } else {
                     initvalue = Integer.valueOf(initvalueString);
                     currentvalue = Integer.valueOf(currentvalueString);
-                    //get user's input
-                    counterText.setName(name);
-                    //Question: Do we need to reset the date to current date when the init value is changed?
-                    if (currentvalue != counterText.getCurrentValue()) {
-                        counterText.setDate();
-                    }
 
-                    counterText.setInitialValue(initvalue);
-                    counterText.setCurrentValue(currentvalue);
-                    counterText.setComment(comment);
+                    InputOutputGson ioGson = new InputOutputGson(EditCounterActivity.this);
+                    ioGson.deleteFile(counterText);
 
                     Counter newCounter = new Counter();
                     newCounter.setName(name);
                     newCounter.setInitialValue(initvalue);
                     newCounter.setCurrentValue(currentvalue);
-                    newCounter.setDate(counterText.getCounterDate());
                     newCounter.setComment(comment);
-
-                    InputOutputGson ioGson = new InputOutputGson(EditCounterActivity.this);
-                    ioGson.deleteFile(counterText);
+                    newCounter.setDate(counterText.getCounterDate());
+                    if (currentvalue != counterText.getCurrentValue()) {
+                        newCounter.setDate();
+                    }
                     ioGson.saveInFile(newCounter);
-
-//                    Intent intent = new Intent();
-//                    intent.putExtra("EDITEDCOUNTER", counterText);
-//                    setResult(RESULT_OK, intent);
                     finish();
-                    //shut down this activity
                 }
             }
         });

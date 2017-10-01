@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">" donglin-CountBook"</string>
+    <string name="app_name">" donglin3-CountBook"</string>
     <string name="title_activity_main">MainActivity</string>
 
     <string name="action_add_counter">Add Counter</string>
