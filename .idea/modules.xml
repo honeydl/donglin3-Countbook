@@ -3,7 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/donglin-CountBook.iml" filepath="$PROJECT_DIR$/donglin-CountBook.iml" />
+      <module fileurl="file://$PROJECT_DIR$/donglin3-Countbook.iml" filepath="$PROJECT_DIR$/donglin3-Countbook.iml" />
     </modules>
   </component>
 </project>
